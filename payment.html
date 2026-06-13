@@ -210,14 +210,9 @@ document.querySelector(
 
 dataLayer.push({
     event: "purchase",
-    amount: localStorage.getItem("grandTotal"),
+    value: Number(localStorage.getItem("grandTotal")) || 0,
+    currency: "INR",
     payment_method: paymentMethod
-});
-
-dataLayer.push({
-    event: "purchase",
-    value: totalPrice,
-    currency: "INR"
 });
 alert(
 "✅ Order Placed Successfully!\n\n" +
