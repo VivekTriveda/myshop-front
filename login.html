@@ -205,30 +205,30 @@ async function login() {
 
         if (res.ok) {
 
-            localStorage.removeItem("cart");
+    localStorage.removeItem("cart");
 
-            alert("Login Successful");
+    alert("Login Successful");
 
-            localStorage.setItem(
-                "user",
-                JSON.stringify(data.user)
-            );
+    localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+    );
 
-            if (typeof dataLayer !== "undefined") {
-               dataLayer.push({
-    event: "login"
-});
+    if (typeof dataLayer !== "undefined") {
+        dataLayer.push({
+            event: "login"
+        });
+    }
 
-setTimeout(() => {
-   window.location.href = "categories.html";
-}, 1000);
+    setTimeout(() => {
+        window.location.href = "categories.html";
+    }, 1000);
 
-        } else {
+} else {
 
-            error.innerHTML =
-                data.message;
+    error.innerHTML = data.message;
 
-        }
+}
 
     } catch (err) {
 
