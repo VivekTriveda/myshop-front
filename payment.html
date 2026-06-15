@@ -170,15 +170,12 @@ Pay Now
 </button>
 
 </div>
-
 <script>
 
-document.getElementById("amount")
-.innerText =
-localStorage.getItem("grandTotal")
-|| 0;
+document.getElementById("amount").innerText =
+localStorage.getItem("grandTotal") || 0;
 
-function payNow(){
+async function payNow(){
 
 let name =
 document.getElementById("customerName").value;
@@ -194,13 +191,8 @@ name === "" ||
 address === "" ||
 mobile === ""
 ){
-
-alert(
-"Please fill all details"
-);
-
-return;
-
+    alert("Please fill all details");
+    return;
 }
 
 let paymentMethod =
@@ -208,28 +200,68 @@ document.querySelector(
 'input[name="payment"]:checked'
 ).value;
 
-dataLayer.push({
-    event: "purchase",
-    value: Number(localStorage.getItem("grandTotal")) || 0,
-    currency: "INR",
-    payment_method: paymentMethod
+const orderData = {
+    customerName: name,
+    address: address,
+    mobile: mobile,
+    paymentMethod: paymentMethod,
+    totalAmount: Number(
+        localStorage.getItem("grandTotal")
+    ) || 0,
+    cartItems: JSON.parse(
+        localStorage.getItem("cart")
+    ) || []
+};
+
+try{
+
+const response = await fetch(
+"https://myshop-back-1.onrender.com/api/auth/place-order",
+{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body: JSON.stringify(orderData)
 });
-alert(
-"✅ Order Placed Successfully!\n\n" +
-"Payment Method: " +
-paymentMethod
-);
 
+const result = await response.json();
 
-localStorage.removeItem("cart");
-localStorage.removeItem("grandTotal");
+if(result.success){
 
-window.location.href =
-"categories.html";
+    dataLayer.push({
+        event:"purchase",
+        value: orderData.totalAmount,
+        currency:"INR",
+        payment_method: paymentMethod
+    });
+
+    alert(
+        "✅ Order Placed Successfully!\nOrder ID: "
+        + result.orderId
+    );
+
+    localStorage.removeItem("cart");
+    localStorage.removeItem("grandTotal");
+
+    window.location.href =
+    "categories.html";
+
+}else{
+
+    alert("Order Failed");
+
+}
+
+}catch(err){
+
+    console.error(err);
+    alert("Server Error");
+
+}
 
 }
 
 </script>
-
 </body> 
 </html>
