@@ -146,11 +146,12 @@ async function registerUser() {
         if (res.ok) 
         {
            dataLayer.push({
-           event: "registration"
-           });
+   event: "registration"
+});
 
-        window.location.href =
-                "login.html";
+setTimeout(() => {
+   window.location.href = "login.html";
+}, 1000);
         }
 
     } catch (err) {
