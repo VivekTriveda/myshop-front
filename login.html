@@ -215,13 +215,13 @@ async function login() {
             );
 
             if (typeof dataLayer !== "undefined") {
-                dataLayer.push({
-                    event: "login"
-                });
-            }
+               dataLayer.push({
+    event: "login"
+});
 
-            window.location.href =
-                "categories.html";
+setTimeout(() => {
+   window.location.href = "categories.html";
+}, 1000);
 
         } else {
 
